@@ -16,16 +16,6 @@ steps:
       solution: '${{ parameters.solution }}'
       selectOrConfig: config
       nugetConfigPath: nuget.config
-      
-  - task: PowerShell@2
-    displayName: 'Install GitVersion.Tool'
-    inputs:
-      targetType: 'inline'
-      script: |
-        dotnet tool install GitVersion.Tool --global --version 5.12
-        # Add local tools to PATH
-        $env:PATH += ";$(Build.SourcesDirectory)\.config\dotnet-tools"
-        Write-Host "Updated PATH: $env:PATH"
 
   - task: MSBuild@1
     inputs:

@@ -8,7 +8,7 @@
 
         <!-- Run GitVersion and save output to JSON file -->
         <Exec Command="dotnet tool install GitVersion.Tool --local --version 5.12" />
-        <Exec Command="dotnet-gitversion -output file -outputfile &quot;$(GitVersionOutputFile)&quot;" />
+        <Exec Command="gitversion -output file -outputfile &quot;$(GitVersionOutputFile)&quot;" />
 
         <!-- Extract required values from the GitVersion JSON output -->
         <JsonPeek ContentPath="$(GitVersionOutputFile)" Query="$.PreReleaseNumber">
