@@ -63,7 +63,7 @@ steps:
   - task: MSBuild@1
     displayName: Build App
     inputs:
-      solution: 'targets.build'
+      solution: 'Applus IWEX.sln'
       msbuildArchitecture: 'x64'
       platform: '$(BuildPlatform)'
       configuration: '$(BuildConfiguration)'

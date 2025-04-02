@@ -27,9 +27,8 @@ jobs:
   steps:
   - template: build-and-test.yml
     parameters:
-      solution: 'D:\a\1\s\Iwex\NDT\UT\Iwex\UI\UWP\App\Applus.NDT.UT.Iwex.UI.UWP.App.csproj'
+      solution: 'Applus IWEX.sln'
       msbuildArguments: >-
-        -t:CiBuildIwex
         -p:AppxBundle=Always
         -p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\\AppxPackages\\"
         -p:AppxBundlePlatforms=$(BuildPlatform)
