@@ -31,24 +31,6 @@ steps:
         $env:PATH += ";$(Build.SourcesDirectory)\.config\dotnet-tools"
         Write-Host "Updated PATH: $env:PATH"
 
-  - task: PowerShell@2
-    displayName: 'Run GitVersion'
-    inputs:
-      targetType: 'inline'
-      script: |
-        # Check if GitVersion is installed
-        if ((Get-Command gitversion -ErrorAction SilentlyContinue)) {
-            Write-Host "gitversion is installed."
-            # Run GitVersion and log output
-            gitversion -output file -outputfile "gitversion.json"
-        }
-        # Check if GitVersion is installed
-        if ((Get-Command dotnet-gitversion -ErrorAction SilentlyContinue)) {
-            Write-Host "dotnet-gitversion is installed."
-            # Run GitVersion and log output
-            dotnet-gitversion -output file -outputfile "gitversion.json"
-        }
-
   - task: MSBuild@1
     inputs:
       solution: '**/*Applus IWEX.sln'
