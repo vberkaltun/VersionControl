@@ -1,0 +1,15 @@
+{
+  "profiles": {
+    "Demo driver 4G": {
+      "commandName": "MsixPackage",
+      "commandLineArgs": "--demoDriver 4"
+    },
+    "Demo driver 6G": {
+      "commandName": "MsixPackage",
+      "commandLineArgs": "--demoDriver 6"
+    },
+    "Without demo driver": {
+      "commandName": "MsixPackage"
+    }
+  }
+}

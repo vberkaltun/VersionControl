@@ -1,0 +1,43 @@
+# Universal Windows Platform
+# Build a Universal Windows Platform project using Visual Studio.
+# Add steps that test and distribute an app, save build artifacts, and more:
+# https://aka.ms/yaml
+
+trigger:
+- develop
+- master
+- release/*
+
+variables:
+  BuildPlatform: 'x64'
+  BuildConfiguration: 'release'
+  iwex.updatelocation: '\\dc1-s-dev-01\App_Downloads\Applus IWEX'
+  system.debug: false
+
+jobs:
+- job: BuildTestDeploy
+  displayName: 'Build, Test and Deploy'
+  cancelTimeoutInMinutes: 1
+  pool:
+    vmImage: windows-2022
+    demands:
+    - DotNetFramework
+    - msbuild
+    - vstest
+  steps:
+  - template: build-and-test.yml
+    parameters:
+      solution: 'Applus IWEX.sln'
+      msbuildArguments: >-
+        -t:CiBuildIwex
+        -p:AppxBundle=Always
+        -p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\\AppxPackages\\"
+        -p:AppxBundlePlatforms=$(BuildPlatform)
+        -p:AppxSymbolPackageEnabled=false
+        -p:GenerateAppxPackageOnBuild=True
+
+  - task: PublishBuildArtifacts@1
+    displayName: 'Publish Artifact: UWP installer'
+    inputs:
+      PathtoPublish: $(Build.ArtifactStagingDirectory)\AppxPackages\
+      ArtifactName: Installer

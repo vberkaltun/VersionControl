@@ -1,0 +1,76 @@
+<Project>
+  <PropertyGroup>
+    <Company>Applus+</Company>
+    <Copyright>Copyright &#9400; Applus+</Copyright>
+    <Platforms>x64</Platforms>
+    <LangVersion>12.0</LangVersion>
+
+    <AnalysisMode>All</AnalysisMode>
+    <AnalysisLevel>9.0</AnalysisLevel>
+    <CodeAnalysisRuleSet>$(MSBuildThisFileDirectory)ca.ruleset</CodeAnalysisRuleSet>
+
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <WarningsAsErrors />
+
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))!='true'">
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>$(MSBuildProjectName).Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.NetAnalyzers" Version="9.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.2.0-beta.556">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Roslynator.Analyzers" Version="4.13.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="GitVersion.MsBuild" Version="[5.12.0]">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+
+    <!-- Fix for https://github.com/dotnet/roslyn/issues/41640 (check for unused usings requires documentation generation) -->
+    <PackageReference Include="SvSoft.MSBuild.CheckUnnecessaryUsings" Version="1.0.1" PrivateAssets="all" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+    <IsPackable>False</IsPackable>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup Condition="$(MSBuildProjectName.EndsWith('.Tests'))">
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.13.0" />
+    <PackageReference Include="MSTest.TestAdapter" Version="3.8.3" />
+    <PackageReference Include="MSTest.TestFramework" Version="3.8.3" />
+    <PackageReference Include="Moq" Version="4.20.72" />
+    <PackageReference Include="Moq.AutoMock" Version="3.5.0" />
+  </ItemGroup>
+
+  <ItemGroup Condition="$(MSBuildProjectName.Contains('.Iwex.UI.UWP.'))">
+    <PackageReference Include="Microsoft.WindowsAppSDK" Version="1.7.250310001" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Required for Moq and AutoMocker to mock internals -->
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>DynamicProxyGenAssembly2</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
+</Project>

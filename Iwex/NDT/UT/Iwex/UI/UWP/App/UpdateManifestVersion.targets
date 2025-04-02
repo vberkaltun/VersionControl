@@ -1,0 +1,48 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <ItemGroup>
+        <PackageReference Include="JsonPeek" Version="1.2.0" />
+    </ItemGroup>
+
+    <Target Name="UpdateManifestVersion" BeforeTargets="PreBuildEvent" Condition="'$(Configuration)' == 'Release'">
+
+        <!-- Run GitVersion and save output to JSON file -->
+        <Exec Command="dotnet tool install GitVersion.Tool --local --version 5.12" />
+        <Exec Command="dotnet-gitversion -output file -outputfile &quot;$(GitVersionOutputFile)&quot;" />
+
+        <!-- Extract required values from the GitVersion JSON output -->
+        <JsonPeek ContentPath="$(GitVersionOutputFile)" Query="$.PreReleaseNumber">
+            <Output TaskParameter="Result" PropertyName="Json_PreReleaseNumber" />
+        </JsonPeek>
+        <JsonPeek ContentPath="$(GitVersionOutputFile)" Query="$.BuildMetaData">
+            <Output TaskParameter="Result" PropertyName="Json_BuildMetaData" />
+        </JsonPeek>
+        <JsonPeek ContentPath="$(GitVersionOutputFile)" Query="$.MajorMinorPatch">
+            <Output TaskParameter="Result" PropertyName="Json_MajorMinorPatch" />
+        </JsonPeek>
+
+        <PropertyGroup>
+            <!-- Define the path to the GitVersion output file -->
+            <GitVersionOutputFile>$(BaseIntermediateOutputPath)gitversion.json</GitVersionOutputFile>
+
+            <!-- Ensure BuildMetaData has a value -->
+            <Json_BuildMetaData>$(JsonPreReleaseNumber)</Json_BuildMetaData>
+            <Json_BuildMetaData Condition="'$(Json_BuildMetaData)' == ''">0</Json_BuildMetaData>
+
+            <!-- Construct the final manifest version -->
+            <ManifestVersion>$(Json_MajorMinorPatch).$(Json_BuildMetaData)</ManifestVersion>
+            <ManifestFile>$(MSBuildThisFileDirectory)Package.appxmanifest</ManifestFile>
+        </PropertyGroup>
+
+        <!-- Update the version in the manifest -->
+        <XmlPoke Condition="Exists('$(ManifestFile)') AND Exists('$(GitVersionOutputFile)')"
+                 XmlInputPath="$(ManifestFile)"
+                 Query="/dn:Package/dn:Identity/@Version"
+                 Value="$(ManifestVersion)"
+                 Namespaces="&lt;Namespace Prefix='dn' Uri='http://schemas.microsoft.com/appx/manifest/foundation/windows10' /&gt;" />
+
+        <!-- Print a success message -->
+        <Message Text="Updated AppX manifest version to: $(ManifestVersion)" Importance="High" />
+
+    </Target>
+</Project>

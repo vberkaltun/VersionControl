@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+  <!-- Define properties and import properties from other targets-->
+
+  <PropertyGroup>
+    <SourceRoot>$(MSBuildThisFileDirectory)</SourceRoot>
+  </PropertyGroup>
+
+  <!-- Define explicit project lists -->
+
+  <ItemGroup>
+    <IwexProjects Include="
+      $(SourceRoot)**\*.UWP.App.csproj;
+    "/>
+  </ItemGroup>
+
+  <!-- Define composite build targets -->
+
+  <Target DependsOnTargets="LoadAllProjects;ListProjects" Name="ListAllProjects" />
+  <Target DependsOnTargets="LoadProjectsWithoutUwpTests;ListProjects" Name="ListProjectsWithoutUwpTests" />
+
+  <Target DependsOnTargets="LoadAllProjects;CoreBuild" Name="Build"/>
+  <Target DependsOnTargets="Clean;Build" Name="Rebuild"/>
+
+  <Target DependsOnTargets="LoadIwexProjects;CoreBuild" Name="CiBuildIwex"/>
+  <Target DependsOnTargets="TreeClean;CiBuildIwex" Name="CiRebuildIwex"/>
+
+
+  <!-- Define project collection initializers -->
+
+  <Target Name="LoadAllProjects">
+    <ItemGroup>
+      <ProjectCollection Include="$(SourceRoot)**\*.csproj"/>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="LoadProjectsWithoutTests">
+    <ItemGroup>
+      <ProjectCollection Include="$(SourceRoot)**\*.csproj" Exclude="$(SourceRoot)**\*.Tests.csproj"/>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="LoadProjectsWithoutUwpTests">
+    <ItemGroup>
+      <ProjectCollection Include="$(SourceRoot)**\*.csproj" Exclude="$(SourceRoot)**\*.UWP.Common.Tests.csproj"/>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="LoadIwexProjects">
+    <ItemGroup>
+      <ProjectCollection Include="@(IwexProjects)"/>
+    </ItemGroup>
+  </Target>
+
+  <Target Name="LoadCalibrationProjects">
+    <ItemGroup>
+      <ProjectCollection Include="@(CalibrationProjects)"/>
+    </ItemGroup>
+  </Target>
+
+  <!-- Define utility targets -->
+
+  <Target Name="CoreBuild">
+    <MSBuild Projects="@(ProjectCollection)" Targets="Build" StopOnFirstFailure="true"/>
+  </Target>
+
+  <Target Name="ListProjects">
+    <Message Text="@(ProjectCollection, '%0a')"/>
+  </Target>
+
+  <Target Name="Clean" DependsOnTargets="LoadAllProjects">
+    <MSBuild Projects="@(ProjectCollection)" Targets="Clean"/>
+  </Target>
+
+  <Target Name="TreeClean">
+    <Exec Command='git clean -xdf -e local.runsettings -e .vs $(SourceRoot)' IgnoreExitCode="true" />
+  </Target>
+
+  <Target Name="Help">
+    <Message Text="Available targets:"/>
+    <Message Text="Build                  : The default target that builds all projects."/>
+    <Message Text="Rebuild                : Cleans and builds all projects."/>
+    <Message Text="Clean                  : Removes all previously build assemblies"/>
+    <Message Text="TreeClean              : Removes untracked files from the working tree"/>
+    <Message Text="CiBuildIwex            : Builds all IWEX projects, except UWP tests"/>
+    <Message Text="CiRebuildIwex          : Cleans and builds all IWEX projects, except UWP tests"/>
+  </Target>
+
+</Project>

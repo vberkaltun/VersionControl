@@ -1,0 +1,71 @@
+parameters:
+- name: solution
+  type: string
+- name: msbuildArguments
+  type: string
+
+steps:
+  - checkout: self
+    clean: true
+    lfs: true
+    persistCredentials: true
+    fetchTags: false
+    
+  - task: NuGetToolInstaller@1
+    displayName: 'Update NuGet'
+    inputs:
+      checkLatest: true
+
+  - task: NuGetAuthenticate@0
+    displayName: 'Authenticate with NuGet'
+
+  - task: NuGetCommand@2
+    displayName: Restore NuGet packages
+    inputs:
+      solution: '${{ parameters.solution }}'
+      selectOrConfig: config
+      nugetConfigPath: nuget.config
+
+  - task: UseDotNet@2
+    inputs:
+      packageType: 'sdk'
+      version: '9.0.x'
+
+  - task: PowerShell@2
+    displayName: 'Install GitVersion.Tool'
+    inputs:
+      targetType: 'inline'
+      script: |
+        dotnet tool install GitVersion.Tool --global --version 5.12
+        # Add local tools to PATH
+        $env:PATH += ";$(Build.SourcesDirectory)\.config\dotnet-tools"
+        Write-Host "Updated PATH: $env:PATH"
+
+  - task: PowerShell@2
+    displayName: 'Run GitVersion'
+    inputs:
+      targetType: 'inline'
+      script: |
+        # Check if GitVersion is installed
+        if (-not (Get-Command gitversion -ErrorAction SilentlyContinue)) {
+            Write-Host "gitversion is not installed."
+            exit 1
+        }
+        # Check if GitVersion is installed
+        if (-not (Get-Command dotnet-gitversion -ErrorAction SilentlyContinue)) {
+            Write-Host "dotnet-gitversion is not installed."
+            exit 1
+        }
+
+        # Run GitVersion and log output
+        gitversion -output file -outputfile "obj\gitversion.json" | Tee-Object -FilePath "obj\gitversion.log"
+
+  - task: MSBuild@1
+    displayName: Build App
+    inputs:
+      solution: 'targets.build'
+      msbuildArchitecture: 'x64'
+      platform: '$(BuildPlatform)'
+      configuration: '$(BuildConfiguration)'
+      msbuildArguments: '${{ parameters.msbuildArguments }}'
+      logProjectEvents: true

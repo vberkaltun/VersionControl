@@ -1,0 +1,51 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.6.33723.286
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{C53E4E32-43E6-4BBB-A2BB-AB8CF8650F21}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		directory.build.props = directory.build.props
+		test.runsettings = test.runsettings
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "NDT", "NDT", "{ADD13725-216E-402F-81A1-98CC9754764B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UT", "UT", "{EA18319E-C113-49BE-8BD3-F6E425B96D7A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Iwex", "Iwex", "{88839C1C-20FA-494B-9998-88D2843B24BB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UI", "UI", "{18EBC4FF-318E-4351-B523-BCB7F202070A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "UWP", "UWP", "{B084C0D8-D278-46D1-A4BC-FEEF3C7DBCEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Applus.NDT.UT.Iwex.UI.UWP.App", "NDT\UT\Iwex\UI\UWP\App\Applus.NDT.UT.Iwex.UI.UWP.App.csproj", "{057B731C-8096-414B-B228-34596CB66174}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{057B731C-8096-414B-B228-34596CB66174}.Debug|x64.ActiveCfg = Debug|x64
+		{057B731C-8096-414B-B228-34596CB66174}.Debug|x64.Build.0 = Debug|x64
+		{057B731C-8096-414B-B228-34596CB66174}.Debug|x64.Deploy.0 = Debug|x64
+		{057B731C-8096-414B-B228-34596CB66174}.Release|x64.ActiveCfg = Release|x64
+		{057B731C-8096-414B-B228-34596CB66174}.Release|x64.Build.0 = Release|x64
+		{057B731C-8096-414B-B228-34596CB66174}.Release|x64.Deploy.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{EA18319E-C113-49BE-8BD3-F6E425B96D7A} = {ADD13725-216E-402F-81A1-98CC9754764B}
+		{88839C1C-20FA-494B-9998-88D2843B24BB} = {EA18319E-C113-49BE-8BD3-F6E425B96D7A}
+		{18EBC4FF-318E-4351-B523-BCB7F202070A} = {88839C1C-20FA-494B-9998-88D2843B24BB}
+		{B084C0D8-D278-46D1-A4BC-FEEF3C7DBCEB} = {18EBC4FF-318E-4351-B523-BCB7F202070A}
+		{057B731C-8096-414B-B228-34596CB66174} = {B084C0D8-D278-46D1-A4BC-FEEF3C7DBCEB}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0E9B6D61-B012-4484-AE73-12D5ABB069A2}
+	EndGlobalSection
+EndGlobal
