@@ -62,6 +62,7 @@ steps:
     inputs:
       solution: '**/*Applus IWEX.sln'
       msbuildArchitecture: 'x64'
+      msbuildVersion: '17.0'
       platform: 'x64'
       configuration: 'release'
       msbuildArguments: >-
