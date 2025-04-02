@@ -47,13 +47,13 @@ steps:
       targetType: 'inline'
       script: |
         # Check if GitVersion is installed
-        if (-not (Get-Command gitversion -ErrorAction SilentlyContinue)) {
+        if ((Get-Command gitversion -ErrorAction SilentlyContinue)) {
             Write-Host "gitversion is not installed."
             # Run GitVersion and log output
             gitversion -output file -outputfile "obj\gitversion.json" | Tee-Object -FilePath "obj\gitversion.log"
         }
         # Check if GitVersion is installed
-        if (-not (Get-Command dotnet-gitversion -ErrorAction SilentlyContinue)) {
+        if ((Get-Command dotnet-gitversion -ErrorAction SilentlyContinue)) {
             Write-Host "dotnet-gitversion is not installed."
             # Run GitVersion and log output
             dotnet-gitversion -output file -outputfile "obj\gitversion.json" | Tee-Object -FilePath "obj\gitversion.log"
