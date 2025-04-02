@@ -7,9 +7,10 @@ parameters:
 steps:
   - checkout: self
     clean: true
+    fetchDepth: 0
+    fetchTags: true
     lfs: true
     persistCredentials: true
-    fetchTags: false
     
   - task: NuGetToolInstaller@1
     displayName: 'Update NuGet'
