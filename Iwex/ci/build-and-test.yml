@@ -10,9 +10,6 @@ steps:
     fetchTags: false
     fetchDepth: 0
 
-  - task: NuGetAuthenticate@1
-    displayName: 'Authenticate with NuGet'
-
   - task: NuGetCommand@2
     displayName: Restore NuGet packages
     inputs:
