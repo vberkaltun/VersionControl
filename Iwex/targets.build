@@ -53,12 +53,6 @@
     </ItemGroup>
   </Target>
 
-  <Target Name="LoadCalibrationProjects">
-    <ItemGroup>
-      <ProjectCollection Include="@(CalibrationProjects)"/>
-    </ItemGroup>
-  </Target>
-
   <!-- Define utility targets -->
 
   <Target Name="CoreBuild">
