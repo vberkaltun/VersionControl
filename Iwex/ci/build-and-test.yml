@@ -1,7 +1,7 @@
 parameters:
 - name: solution
   type: string
-  
+
 steps:
   - checkout: self
     clean: true
@@ -60,7 +60,7 @@ steps:
 
   - task: MSBuild@1
     inputs:
-      solution: 'Applus IWEX.sln'
+      solution: '**/*Applus IWEX.sln'
       msbuildArchitecture: 'x64'
       platform: 'x64'
       configuration: 'release'

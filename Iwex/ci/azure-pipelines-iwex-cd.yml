@@ -27,8 +27,8 @@ jobs:
   steps:
   - template: build-and-test.yml
     parameters:
-      solution: 'Applus IWEX.sln'
-      
+      solution: '**/*Applus IWEX.sln'
+
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: UWP installer'
     inputs:
