@@ -9,13 +9,9 @@ steps:
     fetchTags: true
     lfs: true
     persistCredentials: true
-    
-  - task: NuGetToolInstaller@1
-    displayName: 'Update NuGet'
-    inputs:
-      checkLatest: true
 
-  - task: NuGetAuthenticate@0
+
+  - task: NuGetAuthenticate@1
     displayName: 'Authenticate with NuGet'
 
   - task: NuGetCommand@2
@@ -24,12 +20,7 @@ steps:
       solution: '${{ parameters.solution }}'
       selectOrConfig: config
       nugetConfigPath: nuget.config
-
-  - task: UseDotNet@2
-    inputs:
-      packageType: 'sdk'
-      version: '8.0.x'
-
+      
   - task: PowerShell@2
     displayName: 'Install GitVersion.Tool'
     inputs:
