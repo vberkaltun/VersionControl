@@ -5,11 +5,10 @@ parameters:
 steps:
   - checkout: self
     clean: true
-    fetchDepth: 0
-    fetchTags: true
     lfs: true
     persistCredentials: true
-
+    fetchTags: false
+    fetchDepth: 0
 
   - task: NuGetAuthenticate@1
     displayName: 'Authenticate with NuGet'
