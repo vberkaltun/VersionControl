@@ -17,7 +17,6 @@
     <WindowsXamlEnableOverview>true</WindowsXamlEnableOverview>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
-    <SelfContained>true</SelfContained>
   </PropertyGroup>
   <ItemGroup>
     <None Remove="MainWindow.xaml" />
