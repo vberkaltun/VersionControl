@@ -28,13 +28,7 @@ jobs:
   - template: build-and-test.yml
     parameters:
       solution: 'Applus IWEX.sln'
-      msbuildArguments: >-
-        -p:AppxBundle=Always
-        -p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\\AppxPackages\\"
-        -p:AppxBundlePlatforms=$(BuildPlatform)
-        -p:AppxSymbolPackageEnabled=false
-        -p:GenerateAppxPackageOnBuild=True
-
+      
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: UWP installer'
     inputs:

@@ -1,9 +1,7 @@
 parameters:
 - name: solution
   type: string
-- name: msbuildArguments
-  type: string
-
+  
 steps:
   - checkout: self
     clean: true
@@ -61,11 +59,18 @@ steps:
         }
 
   - task: MSBuild@1
-    displayName: Build App
     inputs:
       solution: 'Applus IWEX.sln'
       msbuildArchitecture: 'x64'
-      platform: '$(BuildPlatform)'
-      configuration: '$(BuildConfiguration)'
-      msbuildArguments: '${{ parameters.msbuildArguments }}'
+      platform: 'x64'
+      configuration: 'release'
+      msbuildArguments: >-
+        -p:AppxBundle=Always
+        -p:UapAppxPackageBuildMode=CI
+        -p:AppxPackageDir="$(Build.ArtifactStagingDirectory)\\AppxPackages\\"
+        -p:AppxBundlePlatforms=$(BuildPlatform)
+        -p:AppxSymbolPackageEnabled=false
+        -p:GenerateAppxPackageOnBuild=True
+      clean: true
+      restoreNugetPackages: true
       logProjectEvents: true
